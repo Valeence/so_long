@@ -6,13 +6,13 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:16:36 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/13 20:15:24 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/14 16:00:34 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int	valide_char(char c)
+int	valide_char(char c, size_t len_gnl)
 {
 	static int	collectible;
 	static int	exit;
@@ -29,15 +29,18 @@ int	valide_char(char c)
 		ft_printf("map need only 0, 1, C, E, P\n");
 		return (0);
 	}
-	if (collectible > 1 || exit > 1 || start > 1)
+	if (len_gnl > 2)
 	{
-		ft_printf("map need only one start, one exit and one collectible\n");
-		return (0);
+		if (collectible != 1 && exit != 1 && start != 1)
+		{
+			ft_printf("map need only one start, one exit and one collectible\n");
+			return (0);
+		}
 	}
 	return (1);
 }
 
-int	check_wall(const char *line, size_t *len)
+int	check_wall(const char *line, size_t *len, size_t len_gnl)
 {
 	size_t	i;
 	size_t	end;
@@ -52,7 +55,7 @@ int	check_wall(const char *line, size_t *len)
 		return (0);
 	while (i < end)
 	{
-		if (!valide_char(line[i]))
+		if (!valide_char(line[i], len_gnl))
 			return (0);
 		i++;
 	}
@@ -64,7 +67,7 @@ int	check_bottom(const char *line, size_t *len)
 	size_t	i;
 
 	i = 0;
-	while (line[i] != '\n')
+	while (line[i] != '\0')
 	{
 		if (line[i] != '1')
 			return (0);
@@ -75,13 +78,11 @@ int	check_bottom(const char *line, size_t *len)
 	return (1);
 }
 
-int	check_map(char *line, size_t *len, int fd)
+int	check_map(const char *line, size_t *len, int fd, size_t *len_gnl)
 {
 	int		i;
-	size_t	nb_gnl;
 
 	i = 0;
-	nb_gnl = count_gnl(line);
 	while (line[i] != '\n')
 	{
 		if (line[i] != '1')
@@ -89,31 +90,34 @@ int	check_map(char *line, size_t *len, int fd)
 		i++;
 	}
 	*len = i;
-	while (nb_gnl > 1)
+	while (len_gnl > 2)
 	{
 		line = get_next_line(fd);
-		if (!check_wall(line, len))
+		if (!check_wall(line, len, len_gnl))
 			return (0);
-		nb_gnl--;
+		len_gnl--;
 	}
+	line = get_next_line(fd);
 	if (!check_bottom(line, len))
+		return (0);
+	if (len_gnl > len)
 		return (0);
 	return (1);
 }
 
-int	valide_map(int fd)
+int	valide_map(int fd, size_t len_gnl)
 {
-	char	*line;
-	size_t	len;
+	const char	*line;
+	size_t		len;
 
 	len = 0;
 	line = NULL;
 	line = get_next_line(fd);
-	if (check_map(line, &len, fd))
+	if (!check_map(line, &len, fd, &len_gnl))
 	{
-		free(line);
-		return (1);
+		free((char *)line);
+		return (0);
 	}
-	free(line);
-	return (0);
+	free((char *)line);
+	return (1);
 }

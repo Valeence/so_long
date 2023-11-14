@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 16:14:00 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/13 16:29:01 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/14 15:59:46 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ size_t	count_gnl(char *path)
 		count++;
 		free(line);
 	}
-	free(line);
 	close(fd);
 	return (count);
 }
