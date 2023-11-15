@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:41:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/14 16:53:54 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/15 11:01:30 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,17 @@ int	check_arg(char *args)
 int	parsing_map(char *map_path)
 {
 	int		fd;
-	size_t	*len_gnl;
+	size_t	len_gnl;
+	size_t	min_line;
 
+	min_line = 3;
 	len_gnl = count_gnl(map_path);
-	if (*len_gnl < 3)
+	if (len_gnl < min_line)
 		return (0);
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
-		return (0);
-	if (valide_map(fd, *len_gnl))
+		return (ft_printf("Error\nmap not found\n"));
+	if (valide_map(fd, len_gnl))
 	{
 		close(fd);
 		return (1);

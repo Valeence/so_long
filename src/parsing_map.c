@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:16:36 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/14 16:00:34 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/15 11:19:41 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	valide_char(char c, size_t len_gnl)
 		ft_printf("map need only 0, 1, C, E, P\n");
 		return (0);
 	}
-	if (len_gnl > 2)
+	if (len_gnl == 3)
 	{
 		if (collectible != 1 && exit != 1 && start != 1)
 		{
@@ -40,7 +40,7 @@ int	valide_char(char c, size_t len_gnl)
 	return (1);
 }
 
-int	check_wall(const char *line, size_t *len, size_t len_gnl)
+int	check_wall(const char *line, size_t len, size_t len_gnl)
 {
 	size_t	i;
 	size_t	end;
@@ -51,7 +51,7 @@ int	check_wall(const char *line, size_t *len, size_t len_gnl)
 	end = ft_strlen(line) - 1;
 	if (line[end - 1] != '1')
 		return (0);
-	if (end != *len)
+	if (end != len)
 		return (0);
 	while (i < end)
 	{
@@ -62,23 +62,23 @@ int	check_wall(const char *line, size_t *len, size_t len_gnl)
 	return (1);
 }
 
-int	check_bottom(const char *line, size_t *len)
+int	check_bottom(const char *line, size_t len)
 {
 	size_t	i;
 
 	i = 0;
-	while (line[i] != '\0')
+	while (line[i] != '\0' && line[i] != '\n')
 	{
 		if (line[i] != '1')
-			return (0);
+			return (ft_printf("bottom need only 1\n"));
 		i++;
 	}
-	if (i != *len)
-		return (0);
+	if (i != len)
+		return (ft_printf("bottom need same len as other"));
 	return (1);
 }
 
-int	check_map(const char *line, size_t *len, int fd, size_t *len_gnl)
+int	check_map(const char *line, size_t len, int fd, size_t len_gnl)
 {
 	int		i;
 
@@ -86,10 +86,10 @@ int	check_map(const char *line, size_t *len, int fd, size_t *len_gnl)
 	while (line[i] != '\n')
 	{
 		if (line[i] != '1')
-			return (0);
+			return (ft_printf("top map need only 1\n"));
 		i++;
 	}
-	*len = i;
+	len = i;
 	while (len_gnl > 2)
 	{
 		line = get_next_line(fd);
@@ -113,7 +113,7 @@ int	valide_map(int fd, size_t len_gnl)
 	len = 0;
 	line = NULL;
 	line = get_next_line(fd);
-	if (!check_map(line, &len, fd, &len_gnl))
+	if (!check_map(line, len, fd, len_gnl))
 	{
 		free((char *)line);
 		return (0);
