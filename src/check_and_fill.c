@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_arg.c                                        :+:      :+:    :+:   */
+/*   check_and_fill.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:41:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/15 11:01:30 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/15 17:12:58 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	check_arg(char *args)
 		{
 			if (*(args + 1) == 'b' && *(args + 2) == 'e'
 				&& *(args + 3) == 'r')
-			{
-				if (parsing_map(map_path))
-					return (1);
-			}
+				return (1);
 			else
 				return (0);
 		}
@@ -36,24 +33,48 @@ int	check_arg(char *args)
 	return (0);
 }
 
-int	parsing_map(char *map_path)
+void	check_size(t_game *game, char *map_path)
 {
+	char	*line;
 	int		fd;
-	size_t	len_gnl;
-	size_t	min_line;
 
-	min_line = 3;
-	len_gnl = count_gnl(map_path);
-	if (len_gnl < min_line)
-		return (0);
+	game->height = 0;
+	game->width = 0;
 	fd = open(map_path, O_RDONLY);
-	if (fd == -1)
-		return (ft_printf("Error\nmap not found\n"));
-	if (valide_map(fd, len_gnl))
+	if (fd < 0 || read(fd, &line, 0) < 0)
+		return (ft_printf("Map not open\n"), exit (1));
+	while (1)
 	{
-		close(fd);
-		return (1);
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		game->height++;
+		free(line);
 	}
 	close(fd);
-	return (0);
+}
+
+void	fill_map(t_game *game, char *map_path)
+{
+	int		fd;
+	int		i;
+	char	*line;
+
+	i = 0;
+	fd = open(map_path, O_RDONLY);
+	game->map = ft_calloc((game->height + 1), sizeof(char *));
+	if (!game->map)
+		return (ft_printf("Malloc error\n"), exit (1));
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		game->map[i] = ft_strdup(line);
+		if (!game->map[i])
+			return (ft_printf("Malloc error\n"), exit (1));
+		free(line);
+		i++;
+	}
+	game->map[i] = NULL;
 }
