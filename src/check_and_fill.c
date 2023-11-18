@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:41:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/15 17:12:58 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/18 01:56:56 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	check_size(t_game *game, char *map_path)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
+		if (game->height == 0)
+			game->width = ft_strlen(line) - 1;
 		game->height++;
 		free(line);
 	}
@@ -62,7 +64,7 @@ void	fill_map(t_game *game, char *map_path)
 
 	i = 0;
 	fd = open(map_path, O_RDONLY);
-	game->map = ft_calloc((game->height + 1), sizeof(char *));
+	game->map = ft_calloc(sizeof(char *), game->height + 1);
 	if (!game->map)
 		return (ft_printf("Malloc error\n"), exit (1));
 	while (1)

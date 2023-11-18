@@ -6,14 +6,14 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 21:37:34 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/15 16:59:30 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/17 23:54:56 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include "../minilibx-linux/mlx.h"
+// # include "../minilibx-linux/mlx.h"
 # include "../libft/include/libft.h"
 # include <fcntl.h>
 # include <unistd.h>
