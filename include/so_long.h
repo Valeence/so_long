@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 21:37:34 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/23 17:18:13 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/23 18:35:41 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@
 # include <stdlib.h>
 # include <string.h>
 
+typedef struct s_img
+{
+	void	*floor;
+	void	*wall;
+	void	*coin;
+	void	*exit;
+}				t_img;
+
 typedef struct s_game
 {
 	char	**map;
 	char	**flood_map;
 	void	*mlx;
-	void	*mlx_win;
+	void	*win;
 	int		width;
 	int		height;
 	int		is_coin;
@@ -35,6 +43,7 @@ typedef struct s_game
 	int		pos_y;
 	int		check_coin;
 	int		check_exit;
+	t_img	img;
 }				t_game;
 
 int		check_arg(char *str);
@@ -51,5 +60,6 @@ void	check_exit(t_game *game);
 void	check_coins(t_game *game);
 void	check_path(t_game *game);
 int		flood_fill(t_game *game, int x, int y);
+void	init_mlx(t_game *game);
 
 #endif
