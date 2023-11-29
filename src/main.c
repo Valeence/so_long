@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:56:36 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/23 19:01:21 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/29 18:11:47 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ int	main(int argc, char **argv)
 	game.mlx = mlx_init();
 	if (!game.mlx)
 		return (ft_printf("Error\nMlx init failed\n"));
-	game.win = mlx_new_window(game.mlx, game.width * 64, game.height * 64,
-			"So_long");
+	game.win = mlx_new_window(game.mlx, game.width * 16, game.height * 16,
+			"so_long");
 	if (!game.win)
 		return (ft_printf("Error\nMlx window init failed\n"));
 	init_mlx(&game);
-	game.img.floor = mlx_xpm_file_to_image(game.mlx, "../Asset/floor.xpm",
-			);
-	mlx_put_image_to_window(game.mlx, game.win, game.img.floor, 0, 0);
+	print_mlx(&game);
 	mlx_loop(game.mlx);
 	return (0);
 }	

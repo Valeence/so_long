@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 21:37:34 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/23 18:35:41 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/29 18:58:06 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ typedef struct s_img
 	void	*wall;
 	void	*coin;
 	void	*exit;
+	void	*player;
 }				t_img;
 
 typedef struct s_game
 {
 	char	**map;
-	char	**flood_map;
+	char	**mlx_map;
 	void	*mlx;
 	void	*win;
 	int		width;
@@ -61,5 +62,7 @@ void	check_coins(t_game *game);
 void	check_path(t_game *game);
 int		flood_fill(t_game *game, int x, int y);
 void	init_mlx(t_game *game);
+void	print_mlx(t_game *game);
+void	print_map(t_game *game, char c, int x, int y);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:41:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/23 15:35:05 by vandre           ###   ########.fr       */
+/*   Updated: 2023/11/29 18:59:04 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void	fill_map(t_game *game, char *map_path)
 	i = 0;
 	fd = open(map_path, O_RDONLY);
 	game->map = ft_calloc(sizeof(char *), game->height + 1);
-	game->flood_map = ft_calloc(sizeof(char *), game->height + 1);
-	if (!game->map || !game->flood_map)
+	game->mlx_map = ft_calloc(sizeof(char *), game->height + 1);
+	if (!game->map || !game->mlx_map)
 		return (ft_printf("Malloc error\n"), exit (1));
 	while (1)
 	{
@@ -86,13 +86,13 @@ void	fill_map(t_game *game, char *map_path)
 		if (!line)
 			break ;
 		game->map[i] = ft_substr(line, 0, ft_strlen_sl(line));
-		game->flood_map[i] = ft_strdup(game->map[i]);
-		if (!game->flood_map[i] || !game->map[i])
+		game->mlx_map[i] = ft_strdup(game->map[i]);
+		if (!game->mlx_map[i] || !game->map[i])
 			return (ft_printf("Malloc error\n"), exit (1));
 		free(line);
 		i++;
 	}
 	game->map[i] = NULL;
-	game->flood_map[i] = NULL;
+	game->mlx_map[i] = NULL;
 	close(fd);
 }
