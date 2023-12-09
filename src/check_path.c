@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:08:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/29 18:54:36 by vandre           ###   ########.fr       */
+/*   Updated: 2023/12/07 19:10:09 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	flood_fill(t_game *game, int x, int y)
 {
 	if (game->map[y][x] == '1' || game->map[y][x] == 'V'
 			|| x >= game->width || y >= game->height
-				|| x < 0 || y < 0)
+			|| x < 0 || y < 0)
 		return (0);
 	if (game->map[y][x] == 'E')
 		game->check_exit++;
@@ -29,7 +29,7 @@ int	flood_fill(t_game *game, int x, int y)
 	return (0);
 }
 
-void	check_path(t_game	*game)
+void	check_path(t_game *game)
 {
 	int		i;
 	int		j;
@@ -38,6 +38,7 @@ void	check_path(t_game	*game)
 	j = 0;
 	while (game->map[j])
 	{
+		i = 0;
 		while (game->map[j][i])
 		{
 			if (game->map[j][i] == 'P')
@@ -45,12 +46,14 @@ void	check_path(t_game	*game)
 				game->pos_x = i;
 				game->pos_y = j;
 			}
+			if (game->map[j][i] == 'E')
+			{
+				game->exit_x = i;
+				game->exit_y = j;
+			}
 			i++;
 		}
 	j++;
-	i = 0;
 	}
 	flood_fill(game, game->pos_x, game->pos_y);
-	if (game->check_exit != 1 || game->check_coin != game->is_coin)
-		return (ft_printf("Exit or coins are unreachable\n"), exit(1));
 }

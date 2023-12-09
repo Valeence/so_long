@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:41:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/29 18:59:04 by vandre           ###   ########.fr       */
+/*   Updated: 2023/12/06 23:30:32 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	check_size(t_game *game, char *map_path)
 
 	game->height = 0;
 	game->width = 0;
+	game->free_height = 0;
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0 || read(fd, &line, 0) < 0)
 		return (ft_printf("Map not open\n"), exit (1));
@@ -44,15 +45,14 @@ void	check_size(t_game *game, char *map_path)
 		game->height++;
 		free(line);
 	}
+	game->free_height = game->height;
 	close(fd);
 }
 
 int	check_arg(char *args)
 {
-	char	*map_path;
-
-	map_path = malloc(sizeof(char) * (ft_strlen(args) + 1));
-	ft_strlcpy(map_path, args, ft_strlen(args) + 1);
+	if (!args)
+		return (0);
 	while (*args != '\0')
 	{
 		if (*args == '.')
@@ -86,7 +86,7 @@ void	fill_map(t_game *game, char *map_path)
 		if (!line)
 			break ;
 		game->map[i] = ft_substr(line, 0, ft_strlen_sl(line));
-		game->mlx_map[i] = ft_strdup(game->map[i]);
+		game->mlx_map[i] = ft_substr(line, 0, ft_strlen_sl(line));
 		if (!game->mlx_map[i] || !game->map[i])
 			return (ft_printf("Malloc error\n"), exit (1));
 		free(line);

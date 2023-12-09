@@ -6,7 +6,7 @@
 #    By: vandre <vandre@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/21 13:10:51 by vandre            #+#    #+#              #
-#    Updated: 2023/11/23 16:41:31 by vandre           ###   ########.fr        #
+#    Updated: 2023/12/05 15:40:00 by vandre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,13 @@ LIBFT				=		libft/libft.a
 MLX					=		minilibx-linux/libmlx.a
 
 CC					=		cc
-CPPFLAGS			=		-I./include -I./libft/include -I./minilibx-linux
-MLXFLAGS			=		-Lmlx -lXext -lX11
+CPPFLAGS			=		-I./include -I./libft/include -I./minilibx-linux -I/usr/include
+MLXFLAGS			=		-lXext -lX11 -lmlx -L/usr/lib
 CFLAGS				=		-Wall -Wextra -Werror -g
 
 $(NAME):			$(OBJ) $(LIBFT) $(MLX)
-						$(CC) $(CFLAGS) $(CPPFLAGS) -lm $(OBJ) $(MLXFLAGS) $(LIBFT) -o $(NAME) $(MLX)
+						$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJ) -o $(NAME) $(LIBFT) -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+
 
 $(OBJ_DIR):
 					mkdir -p $@

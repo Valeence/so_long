@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 18:11:53 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/29 19:43:00 by vandre           ###   ########.fr       */
+/*   Updated: 2023/12/09 17:35:42 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,35 @@ void	init_mlx(t_game *game)
 			&game->width, &game->height);
 	game->img.player = mlx_xpm_file_to_image(game->mlx, "./Asset/player.xpm",
 			&game->width, &game->height);
-	if (!game->img.floor || !game->img.wall || !game->img.coin)
+	if (!game->img.floor || !game->img.wall
+		|| !game->img.coin || !game->img.exit
+		|| !game->img.player)
 	{
-		ft_printf("Error\nMlx image init failed\n");
-		exit(EXIT_FAILURE);
+		return (ft_printf("Error\nMlx image init failed\n"), exit (1));
 	}
 }
 
-void	print_map(t_game *game, char c, int x, int y)
+void	print_img(t_game *game, char c, int x, int y)
 {
+	if (c == '0')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.floor,
+			x * 64, y * 64);
 	if (c == '1')
-		mlx_put_image_to_window(game->mlx, game->win, game->img.wall, x * 16,
-			y * 16);
-	else if (c == '0')
-		mlx_put_image_to_window(game->mlx, game->win, game->img.floor, x * 16,
-			y * 16);
-	else if (c == 'C')
-		mlx_put_image_to_window(game->mlx, game->win, game->img.coin, x * 16,
-			y * 16);
-	else if (c == 'E')
-		mlx_put_image_to_window(game->mlx, game->win, game->img.exit, x * 16,
-			y * 16);
-	else if (c == 'P')
-		mlx_put_image_to_window(game->mlx, game->win, game->img.player, x * 16,
-			y * 16);
+		mlx_put_image_to_window(game->mlx, game->win, game->img.wall,
+			x * 64, y * 64);
+	if (c == 'C')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.coin,
+			x * 64, y * 64);
+	if (c == 'E')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.exit,
+			x * 64, y * 64);
+	if (c == 'P')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.player,
+			x * 64, y * 64);
+	if (!game->img.floor || !game->img.wall
+		|| !game->img.coin || !game->img.exit
+		|| !game->img.player)
+		return (ft_printf("Error\nMlx image init failed\n"), exit (1));
 }
 
 void	print_mlx(t_game *game)
@@ -59,22 +64,56 @@ void	print_mlx(t_game *game)
 	y = 0;
 	while (game->mlx_map[y])
 	{
-		printf("%s\n", game->mlx_map[y]);
 		while (game->mlx_map[y][x])
 		{
+			if (game->mlx_map[y][x] == 'P')
+				print_img(game, 'P', x, y);
+			if (game->mlx_map[y][x] == '0')
+				print_img(game, '0', x, y);
 			if (game->mlx_map[y][x] == '1')
-				print_map(game, '1', x, y);
-			else if (game->mlx_map[y][x] == '0')
-				print_map(game, '0', x, y);
-			else if (game->mlx_map[y][x] == 'C')
-				print_map(game, 'C', x, y);
-			else if (game->mlx_map[y][x] == 'E')
-				print_map(game, 'E', x, y);
-			else if (game->mlx_map[y][x] == 'P')
-				print_map(game, 'P', x, y);
+				print_img(game, '1', x, y);
+			if (game->mlx_map[y][x] == 'C')
+				print_img(game, 'C', x, y);
+			if (game->mlx_map[y][x] == 'E')
+				print_img(game, 'E', x, y);
 		x++;
 		}
-		x = 0;
+	x = 0;
+	y++;
+	}
+}
+
+void	free_image(t_game *game)
+{
+	if (game->img.floor)
+		mlx_destroy_image(game->mlx, game->img.floor);
+	if (game->img.wall)
+		mlx_destroy_image(game->mlx, game->img.wall);
+	if (game->img.coin)
+		mlx_destroy_image(game->mlx, game->img.coin);
+	if (game->img.exit)
+		mlx_destroy_image(game->mlx, game->img.exit);
+	if (game->img.player)
+		mlx_destroy_image(game->mlx, game->img.player);
+}
+
+void	close_game(t_game *game)
+{
+	int	y;
+
+	y = 0;
+	while (y < game->free_height)
+	{
+		if (game->mlx_map[y])
+			free(game->mlx_map[y]);
+		if (game->map[y])
+			free(game->map[y]);
 		y++;
 	}
+	free_image(game);
+	mlx_clear_window(game->mlx, game->win);
+	mlx_destroy_window(game->mlx, game->win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit (0);
 }

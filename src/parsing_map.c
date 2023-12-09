@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:16:36 by vandre            #+#    #+#             */
-/*   Updated: 2023/11/23 16:17:34 by vandre           ###   ########.fr       */
+/*   Updated: 2023/12/09 17:42:57 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ void	check_map(t_game *game)
 	game->is_player = 0;
 	game->check_coin = 0;
 	game->check_exit = 0;
+	game->move = 0;
+	game->pos_x = 0;
+	game->pos_y = 0;
+	game->exit_x = 0;
+	game->exit_y = 0;
 	check_square(game);
 	check_chars(game);
 	check_boundy(game);
@@ -92,4 +97,12 @@ void	check_map(t_game *game)
 	check_exit(game);
 	check_coins(game);
 	check_path(game);
+	if (game->check_exit != 1 || game->check_coin != game->is_coin)
+		return (ft_printf("Exit or coins are unreachable\n"), exit(1));
+}
+
+int	close_window(t_game *game)
+{
+	close_game(game);
+	return (0);
 }
