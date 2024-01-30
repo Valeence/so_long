@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 05:33:24 by vandre            #+#    #+#             */
-/*   Updated: 2023/12/09 17:35:34 by vandre           ###   ########.fr       */
+/*   Updated: 2024/01/18 16:51:08 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,12 @@ void	move_right(t_game *game)
 		game_print_right(game);
 	}
 	else if (game->mlx_map[game->pos_y][game->pos_x + 1] == 'E'
-		&& game->check_coin != 0)
-	{
-		if (game->mlx_map[game->pos_y][game->pos_x + 2] == 'C')
-			game->check_coin--;
-		game_print_right_exit(game);
-	}
-	else if (game->mlx_map[game->pos_y][game->pos_x + 1] == 'E'
 		&& game->check_coin == 0)
 	{
 		game_print_right(game);
 		ft_printf("You win in %d moves\n", game->move);
 		close_game(game);
+		exit (0);
 	}
 }
 
@@ -47,18 +41,12 @@ void	move_left(t_game *game)
 		game_print_left(game);
 	}
 	else if (game->mlx_map[game->pos_y][game->pos_x - 1] == 'E'
-		&& game->check_coin != 0)
-	{
-		if (game->mlx_map[game->pos_y][game->pos_x - 2] == 'C')
-			game->check_coin--;
-		game_print_left_exit(game);
-	}
-	else if (game->mlx_map[game->pos_y][game->pos_x - 1] == 'E'
 		&& game->check_coin == 0)
 	{
 		game_print_left(game);
 		ft_printf("You win in %d moves\n", game->move);
 		close_game(game);
+		exit (0);
 	}
 }
 
@@ -72,18 +60,12 @@ void	move_up(t_game *game)
 		game_print_up(game);
 	}
 	else if (game->mlx_map[game->pos_y - 1][game->pos_x] == 'E'
-		&& game->check_coin != 0)
-	{
-		if (game->mlx_map[game->pos_y - 2][game->pos_x] == 'C')
-			game->check_coin--;
-		game_print_up_exit(game);
-	}
-	else if (game->mlx_map[game->pos_y - 1][game->pos_x] == 'E'
 		&& game->check_coin == 0)
 	{
 		game_print_up(game);
 		ft_printf("You win in %d moves\n", game->move);
 		close_game(game);
+		exit (0);
 	}
 }
 
@@ -97,18 +79,12 @@ void	move_down(t_game *game)
 		game_print_down(game);
 	}
 	else if (game->mlx_map[game->pos_y + 1][game->pos_x] == 'E'
-		&& game->check_coin != 0)
-	{
-		if (game->mlx_map[game->pos_y + 2][game->pos_x] == 'C')
-			game->check_coin--;
-		game_print_down_exit(game);
-	}
-	else if (game->mlx_map[game->pos_y + 1][game->pos_x] == 'E'
 		&& game->check_coin == 0)
 	{
 		game_print_down(game);
 		ft_printf("You win in %d moves\n", game->move);
 		close_game(game);
+		exit (0);
 	}
 }
 
@@ -116,7 +92,10 @@ int	key_hook(int keycode, t_game *game)
 {
 	mlx_hook(game->win, 17, 0, close_window, game);
 	if (keycode == KEY_ESC)
+	{
 		close_game(game);
+		exit (1);
+	}
 	if (keycode == KEY_W)
 		move_up(game);
 	if (keycode == KEY_A)

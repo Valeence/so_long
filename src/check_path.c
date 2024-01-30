@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:08:29 by vandre            #+#    #+#             */
-/*   Updated: 2023/12/07 19:10:09 by vandre           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:39:31 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ int	flood_fill(t_game *game, int x, int y)
 			|| x >= game->width || y >= game->height
 			|| x < 0 || y < 0)
 		return (0);
-	if (game->map[y][x] == 'E')
+	if (game->map[y][x] == 'E' && game->check_exit == 0)
+	{
 		game->check_exit++;
+	}
+	if (game->map[y][x] == 'E' && game->check_exit == 1)
+		return (0);
 	if (game->map[y][x] == 'C')
 		game->check_coin++;
 	game->map[y][x] = 'V';

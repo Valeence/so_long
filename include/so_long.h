@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 21:37:34 by vandre            #+#    #+#             */
-/*   Updated: 2023/12/07 22:03:23 by vandre           ###   ########.fr       */
+/*   Updated: 2024/01/18 12:01:35 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ void	game_print_right(t_game *game);
 void	game_print_left(t_game *game);
 void	game_print_up(t_game *game);
 void	game_print_down(t_game *game);
-void	game_print_right_exit(t_game *game);
-void	game_print_left_exit(t_game *game);
-void	game_print_up_exit(t_game *game);
-void	game_print_down_exit(t_game *game);
+void	free_map(t_game *game);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: vandre <vandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:11:06 by vandre            #+#    #+#             */
-/*   Updated: 2023/12/09 17:32:45 by vandre           ###   ########.fr       */
+/*   Updated: 2024/01/18 14:32:37 by vandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,22 @@ void	game_print_down(t_game *game)
 	game->pos_y++;
 	game->move++;
 	ft_printf("move = %d\n", game->move);
+}
+
+void	free_map(t_game *game)
+{
+	int	y;
+
+	y = 0;
+	while (y < game->free_height)
+	{
+		if (game->mlx_map[y])
+			free(game->mlx_map[y]);
+		if (game->map[y])
+			free(game->map[y]);
+		y++;
+	}
+	free(game->mlx_map);
+	free(game->map);
+	exit(1);
 }
